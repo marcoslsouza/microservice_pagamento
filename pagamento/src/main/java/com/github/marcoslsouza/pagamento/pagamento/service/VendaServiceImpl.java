@@ -52,7 +52,6 @@ public class VendaServiceImpl implements VendaService {
         return page.map(this::convertToVendaVO);
     }
 
-    @Transactional
     public VendaVO findById(Long id) {
         Optional<Venda> venda = this.vendaRepository.findById(id);
         venda.orElseThrow(() -> new ResourceNotFoundException("No records found for this id"));

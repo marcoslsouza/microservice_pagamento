@@ -42,8 +42,8 @@ public class VendaVO extends RepresentationModel<VendaVO> {
         return new ModelMapper().map(venda, VendaVO.class);
     }
 
-	public static VendaVO convertVendaToVendaVO(Venda venda) {
+    public static VendaVO convertVendaToVendaVO(Venda venda) {
 		
-		return VendaVO.convertVendaToVendaVO(venda);
+		return new ModelMapper().map(venda, VendaVO.class);
 	}
 }

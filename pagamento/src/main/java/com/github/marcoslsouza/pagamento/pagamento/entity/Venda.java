@@ -1,6 +1,8 @@
 package com.github.marcoslsouza.pagamento.pagamento.entity;
 
 import lombok.*;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.github.marcoslsouza.pagamento.pagamento.data.vo.VendaVO;
@@ -35,6 +37,6 @@ public class Venda {
 
 	public static Venda convertVendaVOToVenda(VendaVO vendaVO) {
 		
-		return Venda.convertVendaVOToVenda(vendaVO);
+		return new ModelMapper().map(vendaVO, Venda.class);
 	}
 }
