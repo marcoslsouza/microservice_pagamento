@@ -51,7 +51,7 @@ public class ProdutoController {
         );
         PagedModel<EntityModel<ProdutoVO>> pagedModel = assembler.toModel(produtos);
 
-       return ResponseEntity.ok().body(pagedModel);
+        return ResponseEntity.ok().body(pagedModel);
     }
 
     @PostMapping(produces = "application/json", consumes = "application/json")
