@@ -36,7 +36,7 @@ public class VendaServiceImpl implements VendaService {
 
         // Adiciona venda aos produtos
         List<ProdutoVenda> produtosSalvos = new ArrayList();
-        vendaVO.getProdutos().forEach(p -> {
+        vendaVO.getProdutosVO().forEach(p -> {
             ProdutoVenda pv = ProdutoVenda.convertProdutoVendaVOToProdutoVenda(p);
             pv.setVenda(venda);
             produtosSalvos.add(this.produtoVendaRepository.save(pv));

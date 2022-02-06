@@ -3,6 +3,8 @@ package com.github.marcoslsouza.pagamento.pagamento.entity;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.github.marcoslsouza.pagamento.pagamento.data.vo.VendaVO;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -30,4 +32,9 @@ public class Venda {
 
     @Column(name = "valor_total", nullable = false, length = 10)
     private Double valorTotal;
+
+	public static Venda convertVendaVOToVenda(VendaVO vendaVO) {
+		
+		return Venda.convertVendaVOToVenda(vendaVO);
+	}
 }

@@ -25,7 +25,7 @@ public class ProdutoVendaVO extends RepresentationModel<ProdutoVendaVO> {
     @JsonProperty("quantidade")
     private Integer quantidade;
 
-    public static ProdutoVendaVO create(ProdutoVenda produtoVenda) {
+    public static ProdutoVendaVO convertProdutoVendaToProdutoVendaVO(ProdutoVenda produtoVenda) {
         return new ModelMapper().map(produtoVenda, ProdutoVendaVO.class);
     }
 }
