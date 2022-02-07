@@ -33,15 +33,11 @@ public class VendaVO extends RepresentationModel<VendaVO> {
     private Date data;
 
     @JsonProperty("produtos")
-    private List<ProdutoVendaVO> produtosVO;
+    private List<ProdutoVendaVO> produtos;
 
     @JsonProperty("valorTotal")
     private Double valorTotal;
-
-    public static VendaVO create(Venda venda) {
-        return new ModelMapper().map(venda, VendaVO.class);
-    }
-
+   
     public static VendaVO convertVendaToVendaVO(Venda venda) {
 		
 		return new ModelMapper().map(venda, VendaVO.class);

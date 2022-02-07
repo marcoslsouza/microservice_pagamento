@@ -44,7 +44,7 @@ public class VendaController {
             @RequestParam(value = "direction", defaultValue = "asc") String direction)  {
 
         Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
-        Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection,"nome"));
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection,"data"));
         Page<VendaVO> vendas = this.vendaService.findAll(pageable);
         vendas.stream().forEach(p ->
                 p.add(linkTo(methodOn(VendaController.class).findById(p.getId())).withSelfRel())
@@ -55,9 +55,9 @@ public class VendaController {
     }
 
     @PostMapping(produces = "application/json", consumes = "application/json")
-    public ResponseEntity<VendaVO> create(@RequestBody VendaVO produtoVO) {
-        VendaVO prodVO = this.vendaService.create(produtoVO);
-        prodVO.add(linkTo(methodOn(VendaController.class).findById(prodVO.getId())).withSelfRel());
-        return ResponseEntity.ok().body(prodVO);
+    public ResponseEntity<VendaVO> create(@RequestBody VendaVO vendaVO) {
+        VendaVO vdVO = this.vendaService.create(vendaVO);
+        vdVO.add(linkTo(methodOn(VendaController.class).findById(vdVO.getId())).withSelfRel());
+        return ResponseEntity.ok().body(vdVO);
     }
 }

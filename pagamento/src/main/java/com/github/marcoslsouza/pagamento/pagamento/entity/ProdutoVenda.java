@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import org.modelmapper.ModelMapper;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.marcoslsouza.pagamento.pagamento.data.vo.ProdutoVendaVO;
 
 import lombok.AllArgsConstructor;
@@ -41,7 +42,8 @@ public class ProdutoVenda {
     @Column(name = "quantidade", nullable = false, length = 10)
     private Integer quantidade;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne
     @JoinColumn(name = "id_venda")
     private Venda venda;
 

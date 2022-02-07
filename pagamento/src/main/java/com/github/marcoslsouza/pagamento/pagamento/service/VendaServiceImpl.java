@@ -6,10 +6,13 @@ import com.github.marcoslsouza.pagamento.pagamento.entity.Venda;
 import com.github.marcoslsouza.pagamento.pagamento.exception.ResourceNotFoundException;
 import com.github.marcoslsouza.pagamento.pagamento.repository.ProdutoVendaRepository;
 import com.github.marcoslsouza.pagamento.pagamento.repository.VendaRepository;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -36,7 +39,7 @@ public class VendaServiceImpl implements VendaService {
 
         // Adiciona venda aos produtos
         List<ProdutoVenda> produtosSalvos = new ArrayList();
-        vendaVO.getProdutosVO().forEach(p -> {
+        vendaVO.getProdutos().forEach(p -> {
             ProdutoVenda pv = ProdutoVenda.convertProdutoVendaVOToProdutoVenda(p);
             pv.setVenda(venda);
             produtosSalvos.add(this.produtoVendaRepository.save(pv));
@@ -49,7 +52,7 @@ public class VendaServiceImpl implements VendaService {
 
     public Page<VendaVO> findAll(Pageable pageable) {
         Page<Venda> page = this.vendaRepository.findAll(pageable);
-        return page.map(this::convertToVendaVO);
+        return page.map(this::convertVendaToVendaVO);
     }
 
     public VendaVO findById(Long id) {
@@ -58,7 +61,7 @@ public class VendaServiceImpl implements VendaService {
         return VendaVO.convertVendaToVendaVO(venda.get());
     }
 
-    private VendaVO convertToVendaVO(Venda venda) {
-        return VendaVO.convertVendaToVendaVO(venda);
+    private VendaVO convertVendaToVendaVO(Venda venda) {
+        return new ModelMapper().map(venda, VendaVO.class);
     }
 }
