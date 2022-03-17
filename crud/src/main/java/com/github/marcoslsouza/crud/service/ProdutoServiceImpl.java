@@ -2,15 +2,16 @@ package com.github.marcoslsouza.crud.service;
 
 import com.github.marcoslsouza.crud.data.vo.ProdutoVO;
 import com.github.marcoslsouza.crud.entity.Produto;
-import com.github.marcoslsouza.crud.exception.ResourceNotFoundException;
 import com.github.marcoslsouza.crud.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 @Service
 public class ProdutoServiceImpl implements ProdutoService  {
@@ -25,13 +26,11 @@ public class ProdutoServiceImpl implements ProdutoService  {
     @Transactional
     public ProdutoVO create(ProdutoVO produtoVO) {
 
-        ProdutoVO produtoVoRetorno =
-                ProdutoVO.convertProdutoParaProdutoVO(
-                        this.produtoRepository.save(
-                                Produto.convertProdutoVOParaProduto(produtoVO)
-                        )
+        return  ProdutoVO.convertProdutoParaProdutoVO(
+                    this.produtoRepository.save(
+                            Produto.convertProdutoVOParaProduto(produtoVO)
+                    )
                 );
-        return produtoVoRetorno;
     }
 
     public Page<ProdutoVO> findAll(Pageable pageable) {
@@ -41,7 +40,7 @@ public class ProdutoServiceImpl implements ProdutoService  {
 
     public ProdutoVO findById(Long id) {
         Optional<Produto> produto = this.produtoRepository.findById(id);
-        produto.orElseThrow(() -> new ResourceNotFoundException("No records found for this id"));
+        produto.orElseThrow(this.getEntityNotFoundExceptionSupplier());
         return ProdutoVO.convertProdutoParaProdutoVO(produto.get());
     }
 
@@ -56,17 +55,22 @@ public class ProdutoServiceImpl implements ProdutoService  {
                             Produto.convertProdutoVOParaProduto(produtoVO)
                     );
                     return ProdutoVO.convertProdutoParaProdutoVO(produto);
-                }).orElseThrow(() -> new ResourceNotFoundException("No records found for this id"));
+                }).orElseThrow(this.getEntityNotFoundExceptionSupplier());
     }
 
     @Transactional
     public void delete(Long id) {
         Optional<Produto> produto = this.produtoRepository.findById(id);
-        produto.orElseThrow(() -> new ResourceNotFoundException("No records found for this id"));
+        produto.orElseThrow(this.getEntityNotFoundExceptionSupplier());
         this.produtoRepository.delete(produto.get());
+    }
+
+    private Supplier<EntityNotFoundException> getEntityNotFoundExceptionSupplier() {
+        return EntityNotFoundException::new;
     }
 
     private ProdutoVO convertParaProdutoVO(Produto produto) {
        return ProdutoVO.convertProdutoParaProdutoVO(produto);
     }
+    
 }
